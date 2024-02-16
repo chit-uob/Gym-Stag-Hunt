@@ -6,6 +6,6 @@ env = gym.make("StagHunt-Hunt-v0", obs_type='image') # you can pass config param
 env.reset()
 for iteration in range(1000):
   time.sleep(.2)
-  obs, rewards, done, info = env.step([env.action_space.sample(), env.action_space.sample()])
+  obs, rewards, done, info = env.step(env.action_space.sample())
   env.render()
 env.close()
