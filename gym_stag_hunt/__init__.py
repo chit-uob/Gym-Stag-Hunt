@@ -1,4 +1,4 @@
-from gym.envs.registration import register
+from gymnasium import register
 
 register(id="StagHunt-Hunt-v0", entry_point="gym_stag_hunt.envs:HuntEnv")
 

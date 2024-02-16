@@ -1,6 +1,6 @@
 from abc import ABC
 
-from gym import Env
+from gymnasium import Env
 
 from gym_stag_hunt.src.utils import print_matrix
 

@@ -1,7 +1,8 @@
 from sys import stdout
 
-from gym import Env
-from gym.spaces import Discrete, Box
+import gymnasium as gym
+from gymnasium import Env
+from gymnasium.spaces import Discrete, Box
 from numpy.random import randint
 
 COOPERATE = 0
