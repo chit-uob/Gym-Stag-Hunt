@@ -1,3 +1,4 @@
+import numpy as np
 from pettingzoo.utils import wrappers
 from pettingzoo import ParallelEnv
 from pettingzoo.utils import agent_selector
@@ -77,7 +78,9 @@ class PettingZooEnv(ParallelEnv):
         self.dones = dict(zip(self.agents, [False for _ in self.agents]))
         obs = self.env.reset()
         self.accumulated_actions = []
-        self.current_observations = {agent: obs for agent in self.agents}
+        # Edited: fix agent 0 and 1 observing the agent coordinates in the same order
+        # they should see their own coordinates first
+        self.current_observations = {self.agents[0]: obs, self.agents[1]: np.concatenate((obs[2:4], obs[0:2], obs[4:]))}
         self.t = 0
 
         return self.current_observations
