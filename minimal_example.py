@@ -1,8 +1,7 @@
-import random
 import time
-
 from gym_stag_hunt.envs.pettingzoo.hunt import ZooHuntEnvironment
 from zoo_hunt_env_editor import *
+# from proposed_agent import ProposedAgent
 
 # Initialize the environment with your parameters
 env = ZooHuntEnvironment(
@@ -27,8 +26,12 @@ set_stag_coord(env, 1, 1)
 disable_movement_for_stag(env)
 set_plant_positions(env, [(3, 3), (2, 2)])
 
-for _ in range(100):
-  time.sleep(0.1)
-  # env.render(mode="human")
+# proposed_agent = ProposedAgent((1, 1), 1, 1, 1)
+
+for _ in range(10):
+
+  env.render(mode="human")
   observation, reward, done, info = env.step({'1': 1, '2': 0})
+  # proposed_agent.update_parameters(observation['player_0'], observation)
   print(observation)
+  time.sleep(10)
