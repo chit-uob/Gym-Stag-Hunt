@@ -26,12 +26,12 @@ def print_matrix(obs, game, grid_size):
 
     if game == "hunt":
         a, b, stag = (obs[0], obs[1]), (obs[2], obs[3]), (obs[4], obs[5])
-        matrix[a[0]][a[1]][A_AGENT] = True
-        matrix[b[0]][b[1]][B_AGENT] = True
-        matrix[stag[0]][stag[1]][STAG] = True
+        matrix[a[1]][a[0]][A_AGENT] = True
+        matrix[b[1]][b[0]][B_AGENT] = True
+        matrix[stag[1]][stag[0]][STAG] = True
         for i in range(6, len(obs), 2):
             plant = obs[i], obs[i + 1]
-            matrix[plant[0]][plant[1]][PLANT] = True
+            matrix[plant[1]][plant[0]][PLANT] = True
 
     elif game == "harvest":
         a, b = (obs[0], obs[1]), (obs[2], obs[3])
