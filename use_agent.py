@@ -10,6 +10,13 @@ RIGHT = 2
 UP = 3
 STAND = 4
 
+wasd_to_action = {
+    "w": UP,
+    "a": LEFT,
+    "s": DOWN,
+    "d": RIGHT,
+}
+
 # Initialize the environment with your parameters
 env = ZooHuntEnvironment(
     obs_type="coords",
@@ -33,9 +40,9 @@ env.render(mode="human")
 
 for _ in range(10):
     proposed_agent_action = proposed_agent.choose_action(old_agent_obs)
-    human_action = int(input("Enter action (0: left, 1: down, 2: right, 3: up, 4: stand): "))
-    print(f"Human action: {human_action}, Proposed agent action: {proposed_agent_action}")
-    observation, reward, done, info = env.step({'player_0': proposed_agent_action, 'player_1': human_action})
+    human_action = input("Enter action (w: up, a: left, s: down, d: right): ")
+    print(f"Proposed agent action: {proposed_agent_action}, Human action: {human_action}")
+    observation, reward, done, info = env.step({'player_0': proposed_agent_action, 'player_1': wasd_to_action[human_action]})
     new_agent_obs = observation['player_0']
     proposed_agent.update_parameters(old_agent_obs, new_agent_obs)
     old_agent_obs = new_agent_obs
