@@ -32,9 +32,9 @@ env = ZooHuntEnvironment(
 
 # Now you can use the environment to reset, step, render, etc.
 obs = env.reset()
-set_stag_coord(env, 1, 1)
+set_stag_coord(env, 5, 5)
 disable_movement_for_stag(env)
-set_plant_positions(env, [(3, 3), (2, 2)])
+set_plant_positions(env, [(0, 1), (9, 1)])
 proposed_agent = ProposedAgent((0, 0), 1, 1, 1)
 old_agent_obs = env.env.game.get_observation()
 env.render(mode="human")

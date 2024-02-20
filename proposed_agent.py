@@ -47,15 +47,17 @@ class ProposedAgent:
     have parameters of how much it want to approach the stag, plant and the other player
     the parameters are updated based on the other player's actions
     """
-    stag_multiplier = 1
-    plant_multiplier = 1
-    player_multiplier = 1
 
-    def __init__(self, location, stag_weight, plant_weight, player_weight):
+    def __init__(self, location, stag_weight=1, plant_weight=1, player_weight=1, stag_multiplier=1,
+                 plant_multiplier=0.5,
+                 player_multiplier=1):
         self.location = location
         self.stag_weight = stag_weight
         self.plant_weight = plant_weight
         self.player_weight = player_weight
+        self.stag_multiplier = stag_multiplier
+        self.plant_multiplier = plant_multiplier
+        self.player_multiplier = player_multiplier
 
     def update_parameters(self, old_obs, new_obs):
         # observation is a list of coordinates of self, other player, stag, and plants
@@ -66,58 +68,50 @@ class ProposedAgent:
             new_obs)
 
         # update the parameters based on the change in distance to the stag, plant and the other player
-        self.stag_weight += negative_distance_delta(self_location, new_self_location,
+        self.stag_weight += negative_distance_delta(other_player_location, new_other_player_location,
                                                     stag_location) * self.stag_multiplier
-        self.plant_weight += negative_distance_delta(self_location, new_self_location,
+        self.plant_weight += negative_distance_delta(other_player_location, new_other_player_location,
                                                      plant_location_1) * self.plant_multiplier
-        self.plant_weight += negative_distance_delta(self_location, new_self_location,
+        self.plant_weight += negative_distance_delta(other_player_location, new_other_player_location,
                                                      plant_location_2) * self.plant_multiplier
-        self.player_weight += negative_distance_delta(self_location, new_self_location,
-                                                      other_player_location) * self.player_multiplier
+        self.player_weight += negative_distance_delta(other_player_location, new_other_player_location,
+                                                      self_location) * self.player_multiplier
 
         # update the location
         self.location = new_self_location
 
-    def calculate_action_reward(self, old_location, new_location, stag_location, plant_location_1, plant_location_2,
+    def calculate_action_reward(self, new_location, stag_location, plant_location_1, plant_location_2,
                                 other_player_location):
-        # calculate the change in distance to the stag, plant and the other player
-        stag_change = negative_distance_delta(old_location, new_location, stag_location)
-        plant_change = negative_distance_delta(old_location, new_location, plant_location_1) + negative_distance_delta(
-            old_location, new_location, plant_location_2)
-        player_change = negative_distance_delta(old_location, new_location, other_player_location)
-        # return the reward
-        return self.stag_weight * stag_change + self.plant_weight * plant_change + self.player_weight * player_change
+        # calculate the reward for moving to a new location based on the distance to the stag, plant and the other player
+        return (self.stag_weight * -calculate_distance(new_location, stag_location)
+                + self.plant_weight * (-calculate_distance(new_location, plant_location_1)
+                                       + -calculate_distance(new_location, plant_location_2))
+                + self.player_weight * -calculate_distance(new_location, other_player_location))
 
     def choose_action(self, observation):
         self_location, other_player_location, stag_location, plant_location_1, plant_location_2 = unpack_observation(
             observation)
 
-        print(
-            f"Self location: {self_location}, Other player location: {other_player_location}, Stag location: {stag_location}, Plant 1 location: {plant_location_1}, Plant 2 location: {plant_location_2}")
         print(f"weights: stag: {self.stag_weight}, plant: {self.plant_weight}, player: {self.player_weight}")
 
         # get the expected reward for each action
-        up_reward = self.calculate_action_reward(self_location, [self_location[0], self_location[1] - 1], stag_location,
+        up_reward = self.calculate_action_reward([self_location[0], self_location[1] - 1], stag_location,
                                                  plant_location_1, plant_location_2, other_player_location)
-        down_reward = self.calculate_action_reward(self_location, [self_location[0], self_location[1] + 1],
+        down_reward = self.calculate_action_reward([self_location[0], self_location[1] + 1],
                                                    stag_location, plant_location_1, plant_location_2,
                                                    other_player_location)
-        left_reward = self.calculate_action_reward(self_location, [self_location[0] - 1, self_location[1]],
+        left_reward = self.calculate_action_reward([self_location[0] - 1, self_location[1]],
                                                    stag_location, plant_location_1, plant_location_2,
                                                    other_player_location)
-        right_reward = self.calculate_action_reward(self_location, [self_location[0] + 1, self_location[1]],
+        right_reward = self.calculate_action_reward([self_location[0] + 1, self_location[1]],
                                                     stag_location, plant_location_1, plant_location_2,
+                                                    other_player_location)
+        still_reward = self.calculate_action_reward(self_location, stag_location, plant_location_1, plant_location_2,
                                                     other_player_location)
 
         print(
-            f"Up reward: {up_reward}, Down reward: {down_reward}, Left reward: {left_reward}, Right reward: {right_reward}")
+            f"Up reward: {up_reward}, Down reward: {down_reward}, Left reward: {left_reward}, Right reward: {right_reward}, Still reward: {still_reward}")
 
         # choose the action with the highest expected reward
-        if up_reward > down_reward and up_reward > left_reward and up_reward > right_reward:
-            return UP
-        elif down_reward > left_reward and down_reward > right_reward:
-            return DOWN
-        elif left_reward > right_reward:
-            return LEFT
-        else:
-            return RIGHT
+        return [left_reward, down_reward, right_reward, up_reward, still_reward].index(
+            max(left_reward, down_reward, right_reward, up_reward, still_reward))
