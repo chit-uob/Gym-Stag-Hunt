@@ -18,24 +18,8 @@ wasd_to_action = {
 }
 
 # Initialize the environment with your parameters
-env = ZooHuntEnvironment(
-    obs_type="coords",
-    enable_multiagent=True,
-    stag_follows=False,
-    run_away_after_maul=False,
-    forage_quantity=2,
-    stag_reward=5,
-    forage_reward=1,
-    mauling_punishment=-5,
-    grid_size=(10, 10),
-)
-
-# Now you can use the environment to reset, step, render, etc.
-obs = env.reset()
-set_stag_coord(env, 5, 5)
-disable_movement_for_stag(env)
-set_plant_positions(env, [(0, 1), (9, 1)])
-proposed_agent = ProposedAgent((0, 0), 1, 1, 1)
+env = both_far_from_plant_stag_in_mid()
+proposed_agent = ProposedAgent(get_player_0_position(env), 1, 1, 1)
 old_agent_obs = env.env.game.get_observation()
 env.render(mode="human")
 
