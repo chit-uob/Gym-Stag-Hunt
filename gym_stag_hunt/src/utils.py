@@ -50,7 +50,7 @@ def print_matrix(obs, game, grid_size):
 
     symbols = symbol_dict[game]
 
-    stdout.write("╔════════════════════════════╗\n")
+    stdout.write("╔═" + "═════"*grid_size[0] + "══╗\n")
     for row in matrix:
         stdout.write("║ ·")
         for col in row:
@@ -65,7 +65,7 @@ def print_matrix(obs, game, grid_size):
             stdout.write("".join(cell) + "·")
         stdout.write(" ║")
         stdout.write("\n")
-    stdout.write("╚════════════════════════════╝\n\r")
+    stdout.write("╚═" + "═════"*grid_size[0] + "══╝\n\r")
     stdout.flush()
 
 

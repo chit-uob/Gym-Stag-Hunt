@@ -27,6 +27,7 @@ env = ZooHuntEnvironment(
     stag_reward=5,
     forage_reward=1,
     mauling_punishment=-5,
+    grid_size=(10, 10),
 )
 
 # Now you can use the environment to reset, step, render, etc.
