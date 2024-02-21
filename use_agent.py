@@ -23,7 +23,7 @@ proposed_agent = ProposedAgent(get_player_0_position(env), 1, 1, 1)
 old_agent_obs = env.env.game.get_observation()
 env.render(mode="human")
 
-for _ in range(10):
+for _ in range(100):
     proposed_agent_action = proposed_agent.choose_action(old_agent_obs)
     human_action = input("Enter action (w: up, a: left, s: down, d: right): ")
     print(f"Proposed agent action: {proposed_agent_action}, Human action: {human_action}")
