@@ -19,7 +19,7 @@ wasd_to_action = {
 
 # Initialize the environment with your parameters
 env = both_far_from_plant_stag_in_mid()
-proposed_agent = ProposedAgent(get_player_0_position(env), 1, 1, 1, 10, 10, 0)
+proposed_agent = ProposedAgent(get_player_0_position(env), 1, 1, 1, 1, 1, 0)
 old_agent_obs = env.env.game.get_observation()
 env.render(mode="human")
 

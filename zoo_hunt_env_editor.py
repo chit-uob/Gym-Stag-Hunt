@@ -66,7 +66,7 @@ def get_basic_env(grid_size=10):
         stag_reward=5,
         forage_reward=1,
         mauling_punishment=-5,
-        load_renderer=True,
+        # load_renderer=True,
         grid_size=(grid_size, grid_size),
     )
     env.reset()

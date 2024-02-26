@@ -14,6 +14,7 @@ def calculate_distance(location_1, location_2):
     # return math.sqrt(math.pow((location_1[0] - location_2[0]), 2) + math.pow((location_1[1] - location_2[1]), 2))
     return abs((location_1[0]) - location_2[0]) + abs(location_1[1] - location_2[1])
 
+
 def negative_distance_delta(old_location, new_location, target_position):
     """
     Calculate the change in distance between the old location and the target position and the new location and the target position
@@ -24,6 +25,9 @@ def negative_distance_delta(old_location, new_location, target_position):
     """
     old_distance = calculate_distance(old_location, target_position)
     new_distance = calculate_distance(new_location, target_position)
+    # if user stays on the stag, there should be a positive reward
+    if old_distance == 0 and new_distance == 0:
+        return 1
     return -(new_distance - old_distance)
 
 
@@ -40,6 +44,17 @@ def unpack_observation(observation):
     plant_location_1 = observation_int32[6:8]
     plant_location_2 = observation_int32[8:10]
     return self_location, other_player_location, stag_location, plant_location_1, plant_location_2
+
+
+def normalize_deltas(stag_weight_delta, plant_weight_delta, player_weight_delta):
+    print(
+        f"stag_weight_delta: {stag_weight_delta}, plant_weight_delta: {plant_weight_delta}, player_weight_delta: {player_weight_delta}")
+    total_delta = abs(stag_weight_delta) + abs(plant_weight_delta) + abs(player_weight_delta)
+    if total_delta != 0:
+        return stag_weight_delta / total_delta, plant_weight_delta / total_delta, player_weight_delta / total_delta
+    else:
+        # Set the deltas to zero if the total delta is zero
+        return 0, 0, 0
 
 
 class ProposedAgent:
@@ -59,7 +74,6 @@ class ProposedAgent:
         self.plant_learning_rate = plant_learning_rate
         self.player_learning_rate = player_learning_rate
 
-
     def normalize_weights(self):
         total_weight = self.stag_weight + self.plant_weight + self.player_weight
         if total_weight != 0:
@@ -71,18 +85,6 @@ class ProposedAgent:
             self.stag_weight = 1
             self.plant_weight = 1
             self.player_weight = 1
-
-
-    def normalize_deltas(self, stag_weight_delta, plant_weight_delta, player_weight_delta):
-        print(f"stag_weight_delta: {stag_weight_delta}, plant_weight_delta: {plant_weight_delta}, player_weight_delta: {player_weight_delta}")
-        total_delta = abs(stag_weight_delta) + abs(plant_weight_delta) + abs(player_weight_delta)
-        if total_delta != 0:
-            return stag_weight_delta / total_delta, plant_weight_delta / total_delta, player_weight_delta / total_delta
-        else:
-            # Set the deltas to zero if the total delta is zero
-            return 0, 0, 0
-
-
 
     def update_parameters(self, old_obs, new_obs):
         # observation is a list of coordinates of self, other player, stag, and plants
@@ -103,7 +105,9 @@ class ProposedAgent:
                                                       self_location) * self.player_learning_rate
 
         # Normalize the deltas
-        stag_weight_delta, plant_weight_delta, player_weight_delta = self.normalize_deltas(stag_weight_delta, plant_weight_delta, player_weight_delta)
+        stag_weight_delta, plant_weight_delta, player_weight_delta = normalize_deltas(stag_weight_delta,
+                                                                                           plant_weight_delta,
+                                                                                           player_weight_delta)
 
         # Apply the changes to the weights
         self.stag_weight += stag_weight_delta
