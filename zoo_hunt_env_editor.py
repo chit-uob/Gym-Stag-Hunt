@@ -66,6 +66,7 @@ def get_basic_env(grid_size=10):
         stag_reward=5,
         forage_reward=1,
         mauling_punishment=-5,
+        load_renderer=True,
         grid_size=(grid_size, grid_size),
     )
     env.reset()
@@ -107,7 +108,7 @@ def they_close_to_plant_stag_in_mid():
     set_player_1_position(env, 9, 9)
     set_stag_coord(env, 5, 5)
     disable_movement_for_stag(env)
-    set_plant_positions(env, [(9, 1), (9, 8)])
+    set_plant_positions(env, [(0, 1), (9, 8)])
     return env
 
 
@@ -115,7 +116,7 @@ def both_far_from_plant_stag_in_mid():
     env = get_basic_env()
     set_player_0_position(env, 0, 0)
     set_player_1_position(env, 9, 9)
-    set_stag_coord(env, 5, 5)
+    set_stag_coord(env, 4, 4)
     disable_movement_for_stag(env)
-    set_plant_positions(env, [(0, 1), (9, 8)])
+    set_plant_positions(env, [(9, 1), (0, 8)])
     return env
