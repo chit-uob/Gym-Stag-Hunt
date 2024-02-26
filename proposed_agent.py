@@ -97,17 +97,19 @@ class ProposedAgent:
         # Calculate the change in each weight
         stag_weight_delta = negative_distance_delta(other_player_location, new_other_player_location,
                                                     stag_location) * self.stag_learning_rate
-        plant_weight_delta = max(negative_distance_delta(other_player_location, new_other_player_location,
-                                                         plant_location_1),
-                                 negative_distance_delta(other_player_location, new_other_player_location,
-                                                         plant_location_2)) * self.plant_learning_rate
+        # Focus on the plant that is closer to the other player
+        closest_plant_location = plant_location_1 if calculate_distance(plant_location_1,
+                                                                        new_other_player_location) < calculate_distance(
+            plant_location_2, new_other_player_location) else plant_location_2
+        plant_weight_delta = negative_distance_delta(other_player_location, new_other_player_location,
+                                                     closest_plant_location) * self.plant_learning_rate
         player_weight_delta = negative_distance_delta(other_player_location, new_other_player_location,
                                                       self_location) * self.player_learning_rate
 
         # Normalize the deltas
         stag_weight_delta, plant_weight_delta, player_weight_delta = normalize_deltas(stag_weight_delta,
-                                                                                           plant_weight_delta,
-                                                                                           player_weight_delta)
+                                                                                      plant_weight_delta,
+                                                                                      player_weight_delta)
 
         # Apply the changes to the weights
         self.stag_weight += stag_weight_delta
