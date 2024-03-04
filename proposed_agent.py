@@ -47,8 +47,8 @@ def unpack_observation(observation):
 
 
 def normalize_deltas(stag_weight_delta, plant_weight_delta, player_weight_delta):
-    print(
-        f"stag_weight_delta: {stag_weight_delta}, plant_weight_delta: {plant_weight_delta}, player_weight_delta: {player_weight_delta}")
+    # print(
+    #     f"stag_weight_delta: {stag_weight_delta}, plant_weight_delta: {plant_weight_delta}, player_weight_delta: {player_weight_delta}")
     total_delta = abs(stag_weight_delta) + abs(plant_weight_delta) + abs(player_weight_delta)
     if total_delta != 0:
         return stag_weight_delta / total_delta, plant_weight_delta / total_delta, player_weight_delta / total_delta
@@ -134,7 +134,7 @@ class ProposedAgent:
         self_location, other_player_location, stag_location, plant_location_1, plant_location_2 = unpack_observation(
             observation)
 
-        print(f"weights: stag: {self.stag_weight}, plant: {self.plant_weight}, player: {self.player_weight}")
+        # print(f"weights: stag: {self.stag_weight}, plant: {self.plant_weight}, player: {self.player_weight}")
 
         # get the expected reward for each action
         up_reward = self.calculate_action_reward([self_location[0], self_location[1] - 1], stag_location,
@@ -151,8 +151,8 @@ class ProposedAgent:
         still_reward = self.calculate_action_reward(self_location, stag_location, plant_location_1, plant_location_2,
                                                     other_player_location)
 
-        print(
-            f"Up reward: {up_reward}, Down reward: {down_reward}, Left reward: {left_reward}, Right reward: {right_reward}, Still reward: {still_reward}")
+        # print(
+        #     f"Up reward: {up_reward}, Down reward: {down_reward}, Left reward: {left_reward}, Right reward: {right_reward}, Still reward: {still_reward}")
 
         # choose the action with the highest expected reward
         return [left_reward, down_reward, right_reward, up_reward, still_reward].index(

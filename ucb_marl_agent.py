@@ -83,9 +83,16 @@ class MARL_Comm(Agent):
         gamma_hop - The gamma_hop distance for the agent
         """
 
+
+
         # The set of H number of Q-Tables.
-        self.qTables = {i + 1: defaultdict(lambda: defaultdict(lambda: length_of_episode)) for i in
-                        range(length_of_episode)}
+        def default_length():
+            return length_of_episode
+
+        def default_inner_dict():
+            return defaultdict(default_length)
+
+        self.qTables = {i + 1: defaultdict(default_inner_dict) for i in range(length_of_episode)}
 
         # This will contain the number of times each state action has been seen for each timestep
         self.nTables = {i + 1: defaultdict(lambda: defaultdict(lambda: 0)) for i in range(length_of_episode)}
@@ -196,6 +203,7 @@ class MARL_Comm(Agent):
             if q_table[state][i] > max_value:
                 max_value = q_table[state][i]
                 move = i
+        print(f"0: {q_table[state][0]}, 1: {q_table[state][1]}, 2: {q_table[state][2]}, 3: {q_table[state][3]}, 4: {q_table[state][4]}")
         return move
 
     def choose_smallest_value(self, state, time_step):

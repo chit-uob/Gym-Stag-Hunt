@@ -1,5 +1,6 @@
 import numpy as np
 from gym_stag_hunt.envs.pettingzoo.hunt import ZooHuntEnvironment
+from gym_stag_hunt.src.utils import respawn_plants
 
 def get_player_0_position(env):
     """
@@ -36,6 +37,13 @@ def set_plant_positions(env, plant_positions):
     env.env.game.PLANTS = [np.array(pos) for pos in plant_positions]
 
 
+def disable_plant_respawn():
+    """
+    Disable the respawn of the plants in the ZooHuntEnvironment.
+    """
+    pass
+
+
 def set_player_0_position(env, x, y):
     """
     Set the position of player 0 in the ZooHuntEnvironment.
@@ -66,7 +74,7 @@ def get_basic_env(grid_size=10):
         stag_reward=5,
         forage_reward=1,
         mauling_punishment=-5,
-        # load_renderer=True,
+        load_renderer=True,
         grid_size=(grid_size, grid_size),
     )
     env.reset()
@@ -118,5 +126,15 @@ def both_far_from_plant_stag_in_mid():
     set_player_1_position(env, 9, 9)
     set_stag_coord(env, 4, 4)
     disable_movement_for_stag(env)
-    set_plant_positions(env, [(9, 1), (0, 8)])
+    set_plant_positions(env, [(9, 0), (0, 9)])
+    return env
+
+
+def choose_from_stag_or_plant():
+    env = get_basic_env()
+    set_player_0_position(env, 2, 2)
+    set_player_1_position(env, 7, 7)
+    set_stag_coord(env, 4, 5)
+    disable_movement_for_stag(env)
+    set_plant_positions(env, [(0, 0), (9, 9)])
     return env

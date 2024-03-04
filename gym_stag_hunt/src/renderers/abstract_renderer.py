@@ -1,5 +1,6 @@
 import pygame as pg
 from numpy import rot90, flipud
+import os
 
 from gym_stag_hunt.src.entities import Entity, get_gui_window_icon
 
@@ -19,6 +20,9 @@ class AbstractRenderer:
         :param window_title: What we set as the window caption
         :param screen_size: The size of the virtual display on which we will be rendering stuff on
         """
+        x = 900
+        y = 45
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x, y)
         pg.init()  # initialize pygame
         pg.display.set_caption(window_title)  # set the window caption
         pg.display.set_icon(get_gui_window_icon())  # set the window icon

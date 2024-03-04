@@ -18,19 +18,21 @@ wasd_to_action = {
 }
 
 # Initialize the environment with your parameters
-env = both_far_from_plant_stag_in_mid()
+env = choose_from_stag_or_plant()
 proposed_agent = ProposedAgent(get_player_0_position(env), 1, 1, 1, 1, 1, 0)
-old_agent_obs = env.env.game.get_observation()
+agent_0_obs = env.observe("player_0")
+agent_1_obs = env.observe("player_1")
 env.render(mode="human")
 
 for _ in range(100):
-    proposed_agent_action = proposed_agent.choose_action(old_agent_obs)
+    proposed_agent_action = proposed_agent.choose_action(agent_0_obs)
     human_action = ""
     while human_action == "":
         human_action = input("Enter action (w: up, a: left, s: down, d: right, q: stand): ")
     print(f"Proposed agent action: {proposed_agent_action}, Human action: {human_action}")
     observation, reward, done, info = env.step({'player_0': proposed_agent_action, 'player_1': wasd_to_action[human_action]})
     new_agent_obs = observation['player_0']
-    proposed_agent.update_parameters(old_agent_obs, new_agent_obs)
-    old_agent_obs = new_agent_obs
+    print(observation)
+    proposed_agent.update_parameters(agent_0_obs, new_agent_obs)
+    agent_0_obs = new_agent_obs
     env.render(mode="human")
