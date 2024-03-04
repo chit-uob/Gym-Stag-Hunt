@@ -116,7 +116,7 @@ def they_close_to_plant_stag_in_mid():
     set_player_1_position(env, 9, 9)
     set_stag_coord(env, 5, 5)
     disable_movement_for_stag(env)
-    set_plant_positions(env, [(0, 1), (9, 8)])
+    set_plant_positions(env, [(9, 1), (9, 8)])
     return env
 
 
