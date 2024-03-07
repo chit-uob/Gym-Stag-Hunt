@@ -4,7 +4,7 @@ from zoo_hunt_env_editor import *
 from proposed_agent import ProposedAgent
 from ucb_marl_agent import MARL_Comm
 
-EPISODES = 50000
+EPISODES = 100000
 TIME_STEP = 20
 
 rl_agent = MARL_Comm('player_1', 1, EPISODES, TIME_STEP, 0)
