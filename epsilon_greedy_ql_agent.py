@@ -46,6 +46,9 @@ class EpsilonGreedyQLAgent:
             self.q_table[encoded_obs] = np.zeros(self.n_actions)
         if verbose:
             print(self.q_table[encoded_obs])
+        # if all values are 0, then stand still
+        if np.all(self.q_table[encoded_obs] == 0):
+            return 4
         return np.argmax(self.q_table[encoded_obs])
 
     def store_transition(self, encoded_obs, action, reward):
