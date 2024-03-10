@@ -8,7 +8,7 @@ from epsilon_greedy_ql_agent import EpsilonGreedyQLAgent
 TIME_STEP = 20
 
 import dill
-with open('eg_q_table.pkl', 'rb') as f:
+with open('eg_q_table_1.pkl', 'rb') as f:
     rl_agent = dill.load(f)
 
 
