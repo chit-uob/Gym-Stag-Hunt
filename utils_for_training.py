@@ -93,11 +93,14 @@ def train_agent(env_generator, human_agent_settings, rl_agent,
             print(f"Evaluation results saved to {eval_result_filename}")
 
 
-def plot_eval_results(eval_result_filename):
+def plot_eval_results(eval_result_filename, plot_title, x_label="Episode", y_label="Turns until reward"):
     with open(eval_result_filename, 'r') as f:
         eval_results = json.load(f)
     x, y = zip(*eval_results)
     plt.plot(x, y)
+    plt.title(plot_title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
     plt.show()
 
 
