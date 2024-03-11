@@ -15,7 +15,7 @@ def decay_epsilon(epsilon_value, decay_rate):
     return epsilon_value * decay_rate
 
 
-def eval_agent(env, human_agent, rl_agent, total_time_step=20, eval_type='turn_until_reward'):
+def eval_agent(env, human_agent, rl_agent, total_time_step=20):
     """
     Evaluate the agent's performance.
     :param env: The environment to evaluate the agent in.
@@ -38,11 +38,9 @@ def eval_agent(env, human_agent, rl_agent, total_time_step=20, eval_type='turn_u
         agent_0_obs = new_agent_0_obs
         agent_1_obs = new_agent_1_obs
         total_reward += reward['player_1']
-        if eval_type == 'turn_until_reward' and total_reward > 0:
-            return time_step
-    if eval_type == 'turn_until_reward':
-        return total_time_step
-    return total_reward
+        if total_reward > 0:
+            return total_reward, time_step
+    return total_reward, total_time_step
 
 
 def train_agent(env_generator, human_agent_settings, rl_agent,
@@ -81,7 +79,7 @@ def train_agent(env_generator, human_agent_settings, rl_agent,
             env_for_eval = env_generator()
             human_agent_for_eval = ProposedAgent(get_player_0_position(env_for_eval), *human_agent_settings)
             eval_result = eval_agent(env_for_eval, human_agent_for_eval, rl_agent, total_time_step)
-            eval_results.append((episode, eval_result))
+            eval_results.append((episode, *eval_result))
 
     with open(rl_agent_filename, 'wb') as f:
         dill.dump(rl_agent, f)
@@ -96,8 +94,12 @@ def train_agent(env_generator, human_agent_settings, rl_agent,
 def plot_eval_results(eval_result_filename, plot_title, x_label="Episode", y_label="Turns until reward"):
     with open(eval_result_filename, 'r') as f:
         eval_results = json.load(f)
-    x, y = zip(*eval_results)
-    plt.plot(x, y)
+    episodes, rewards, turn_until_reward = zip(*eval_results)
+    print(episodes)
+    print(rewards)
+    print(turn_until_reward)
+    how_good = [reward * 20-turn for reward, turn in zip(rewards, turn_until_reward)]
+    plt.plot(episodes, how_good)
     plt.title(plot_title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
