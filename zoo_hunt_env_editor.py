@@ -2,6 +2,7 @@ import numpy as np
 from gym_stag_hunt.envs.pettingzoo.hunt import ZooHuntEnvironment
 from gym_stag_hunt.src.utils import respawn_plants
 
+
 def get_player_0_position(env):
     """
     Get the position of player 0 in the ZooHuntEnvironment.
@@ -9,6 +10,7 @@ def get_player_0_position(env):
     :return: (x, y) coordinates
     """
     return env.env.game.A_AGENT
+
 
 def set_stag_coord(env, x, y):
     """
@@ -64,7 +66,7 @@ def set_player_1_position(env, x, y):
     env.env.game.B_AGENT = np.array([x, y])
 
 
-def get_basic_env(grid_size=10):
+def get_basic_env(grid_size=10, load_renderer=False):
     env = ZooHuntEnvironment(
         obs_type="coords",
         enable_multiagent=True,
@@ -74,15 +76,15 @@ def get_basic_env(grid_size=10):
         stag_reward=5,
         forage_reward=1,
         mauling_punishment=-5,
-        # load_renderer=True,
+        load_renderer=load_renderer,
         grid_size=(grid_size, grid_size),
     )
     env.reset()
     return env
 
 
-def both_close_to_stag():
-    env = get_basic_env()
+def both_close_to_stag(load_renderer=False):
+    env = get_basic_env(load_renderer=load_renderer)
     set_player_0_position(env, 4, 5)
     set_player_1_position(env, 6, 5)
     set_stag_coord(env, 5, 5)
@@ -90,8 +92,9 @@ def both_close_to_stag():
     set_plant_positions(env, [(0, 1), (9, 8)])
     return env
 
-def both_close_to_plant_stag_in_mid():
-    env = get_basic_env()
+
+def both_close_to_plant_stag_in_mid(load_renderer=False):
+    env = get_basic_env(load_renderer=load_renderer)
     set_player_0_position(env, 0, 0)
     set_player_1_position(env, 9, 9)
     set_stag_coord(env, 5, 5)
@@ -100,8 +103,8 @@ def both_close_to_plant_stag_in_mid():
     return env
 
 
-def we_close_to_plant_stag_in_mid():
-    env = get_basic_env()
+def we_close_to_plant_stag_in_mid(load_renderer=False):
+    env = get_basic_env(load_renderer=load_renderer)
     set_player_0_position(env, 0, 0)
     set_player_1_position(env, 9, 9)
     set_stag_coord(env, 5, 5)
@@ -110,8 +113,8 @@ def we_close_to_plant_stag_in_mid():
     return env
 
 
-def they_close_to_plant_stag_in_mid():
-    env = get_basic_env()
+def they_close_to_plant_stag_in_mid(load_renderer=False):
+    env = get_basic_env(load_renderer=load_renderer)
     set_player_0_position(env, 0, 0)
     set_player_1_position(env, 9, 9)
     set_stag_coord(env, 5, 5)
@@ -120,8 +123,8 @@ def they_close_to_plant_stag_in_mid():
     return env
 
 
-def both_far_from_plant_stag_in_mid():
-    env = get_basic_env()
+def both_far_from_plant_stag_in_mid(load_renderer=False):
+    env = get_basic_env(load_renderer=load_renderer)
     set_player_0_position(env, 0, 0)
     set_player_1_position(env, 9, 9)
     set_stag_coord(env, 4, 4)
@@ -130,8 +133,8 @@ def both_far_from_plant_stag_in_mid():
     return env
 
 
-def choose_from_stag_or_plant():
-    env = get_basic_env()
+def choose_from_stag_or_plant(load_renderer=False):
+    env = get_basic_env(load_renderer=load_renderer)
     set_player_0_position(env, 2, 2)
     set_player_1_position(env, 7, 7)
     set_stag_coord(env, 4, 5)

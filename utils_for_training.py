@@ -1,3 +1,4 @@
+import time
 from epsilon_greedy_ql_agent import EpsilonGreedyQLAgent
 from proposed_agent import ProposedAgent
 from zoo_hunt_env_editor import get_player_0_position
@@ -98,3 +99,28 @@ def plot_eval_results(eval_result_filename):
     x, y = zip(*eval_results)
     plt.plot(x, y)
     plt.show()
+
+
+def play_agent(env_generator, human_agent_settings, rl_agent_file_name,
+               total_time_step=20, frame_interval=0.5, load_renderer=True):
+    with open(rl_agent_file_name, 'rb') as f:
+        rl_agent = dill.load(f)
+    env = env_generator(load_renderer=load_renderer)
+    observation, reward, done, info = env.step({'player_0': 4, 'player_1': 4})
+    env.render(mode="human")
+    time.sleep(frame_interval)
+    agent_0_obs = observation['player_0']
+    agent_1_obs = observation['player_1']
+    human_agent = ProposedAgent(get_player_0_position(env), *human_agent_settings)
+    for time_step in range(total_time_step):
+        human_agent_action = human_agent.choose_action(agent_0_obs)
+        rl_agent_action = rl_agent.play_normal(encode_obs(agent_1_obs))
+        observation, reward, done, info = env.step(
+            {'player_0': human_agent_action, 'player_1': rl_agent_action})
+        new_agent_0_obs = observation['player_0']
+        new_agent_1_obs = observation['player_1']
+        human_agent.update_parameters(agent_0_obs, new_agent_0_obs)
+        agent_0_obs = new_agent_0_obs
+        agent_1_obs = new_agent_1_obs
+        env.render(mode="human")
+        time.sleep(frame_interval)
