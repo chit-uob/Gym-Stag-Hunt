@@ -46,7 +46,7 @@ def eval_agent(env, human_agent, rl_agent, total_time_step=20, eval_type='turn_u
 
 def train_agent(env_generator, human_agent_settings, rl_agent,
                 episodes=5000, total_time_step=20, progress_print=500,
-                decay_count=500, decay_rate=0.991,
+                decay_count=300, decay_rate=0.991,
                 need_eval=False, eval_episodes=10,
                 rl_agent_filename='eg_q_table.pkl',
                 eval_result_filename='eg_eval_result.json'):
