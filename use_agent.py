@@ -18,7 +18,7 @@ wasd_to_action = {
 }
 
 # Initialize the environment with your parameters
-env = choose_from_stag_or_plant()
+env = stag_on_the_side_plant_in_mid()
 proposed_agent = ProposedAgent(get_player_0_position(env), 1, 1, 1, 1, 1, 0)
 agent_0_obs = env.observe("player_0")
 agent_1_obs = env.observe("player_1")

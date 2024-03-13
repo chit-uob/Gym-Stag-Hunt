@@ -133,6 +133,16 @@ def both_far_from_plant_stag_in_mid(load_renderer=False):
     return env
 
 
+def stag_on_the_side_plant_in_mid(load_renderer=False):
+    env = get_basic_env(load_renderer=load_renderer)
+    set_player_0_position(env, 0, 0)
+    set_player_1_position(env, 9, 9)
+    set_stag_coord(env, 9, 0)
+    disable_movement_for_stag(env)
+    set_plant_positions(env, [(4, 4), (0, 9)])
+    return env
+
+
 def choose_from_stag_or_plant(load_renderer=False):
     env = get_basic_env(load_renderer=load_renderer)
     set_player_0_position(env, 2, 2)
