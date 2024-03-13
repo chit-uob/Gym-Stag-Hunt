@@ -11,9 +11,9 @@ for env_type in TYPE_OF_ENVS:
         rl_agent = EpsilonGreedyQLAgent('player_1', 5, epsilon=0.9, alpha=0.1, gamma=0.9)
         file_prefix = f"training_results/{env_type.__name__}_{settings_name}_"
         print(file_prefix)
-        # train_agent(env_type, setting_type, rl_agent,
-        #             need_eval=True, rl_agent_filename=file_prefix+"table.pkl",
-        #             eval_result_filename=file_prefix+"result.json")
-        # print("finished training")
+        train_agent(env_type, setting_type, rl_agent,
+                    need_eval=True, rl_agent_filename=file_prefix+"table.pkl",
+                    eval_result_filename=file_prefix+"result.json")
+        print("finished training")
         plot_eval_results(file_prefix+"result.json", f"{env_type.__name__}_{settings_name}")
-        play_agent(env_type, setting_type, file_prefix+"table.pkl")
+        # play_agent(env_type, setting_type, file_prefix+"table.pkl")
