@@ -91,18 +91,23 @@ def train_agent(env_generator, human_agent_settings, rl_agent,
             print(f"Evaluation results saved to {eval_result_filename}")
 
 
-def plot_eval_results(eval_result_filename, plot_title, x_label="Episode", y_label="Turns until reward"):
+def plot_eval_results(eval_result_filename, plot_title):
     with open(eval_result_filename, 'r') as f:
         eval_results = json.load(f)
     episodes, rewards, turn_until_reward = zip(*eval_results)
-    print(episodes)
-    print(rewards)
-    print(turn_until_reward)
-    how_good = [reward * 20-turn for reward, turn in zip(rewards, turn_until_reward)]
-    plt.plot(episodes, how_good)
+    # print(episodes)
+    # print(rewards)
+    # print(turn_until_reward)
+    # how_good = [reward * 20-turn for reward, turn in zip(rewards, turn_until_reward)]
+    plt.plot(episodes, turn_until_reward)
     plt.title(plot_title)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
+    plt.xlabel("Episodes")
+    plt.ylabel("Turn until reward")
+    plt.show()
+    plt.plot(episodes, rewards)
+    plt.title(plot_title)
+    plt.xlabel("Episodes")
+    plt.ylabel("Total reward")
     plt.show()
 
 
