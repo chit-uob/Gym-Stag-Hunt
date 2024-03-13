@@ -28,10 +28,12 @@ def print_matrix(obs, game, grid_size):
         a, b, stag = (obs[0], obs[1]), (obs[2], obs[3]), (obs[4], obs[5])
         matrix[a[1]][a[0]][A_AGENT] = True
         matrix[b[1]][b[0]][B_AGENT] = True
-        matrix[stag[1]][stag[0]][STAG] = True
+        if stag != (255, 255):
+            matrix[stag[1]][stag[0]][STAG] = True
         for i in range(6, len(obs), 2):
             plant = obs[i], obs[i + 1]
-            matrix[plant[1]][plant[0]][PLANT] = True
+            if plant != (255, 255):
+                matrix[plant[1]][plant[0]][PLANT] = True
 
     elif game == "harvest":
         a, b = (obs[0], obs[1]), (obs[2], obs[3])
@@ -114,5 +116,13 @@ def respawn_plants(plants, tagged_plants, grid_dims, used_coordinates):
             grid_dims=grid_dims, used_coordinates=plants + used_coordinates
         )
         new_plant[0], new_plant[1] = new_pos
+        plants[tagged_plant] = new_plant
+    return plants
+
+
+def does_not_respawn_plants(plants, tagged_plants, grid_dims, used_coordinates):
+    for tagged_plant in tagged_plants:
+        new_plant = zeros(2, dtype=uint8)
+        new_plant[0], new_plant[1] = 255, 255
         plants[tagged_plant] = new_plant
     return plants

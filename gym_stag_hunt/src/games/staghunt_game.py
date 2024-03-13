@@ -7,6 +7,7 @@ from gym_stag_hunt.src.utils import (
     place_entity_in_unoccupied_cell,
     spawn_plants,
     respawn_plants,
+    does_not_respawn_plants,
 )
 
 # Entity Keys
@@ -33,6 +34,8 @@ class StagHunt(AbstractGridGame):
         obs_type,
         load_renderer,
         enable_multiagent,
+        will_respawn_plants=True,
+        will_respawn_stag=True,
     ):
         """
         :param stag_reward: How much reinforcement the agents get for catching the stag
@@ -49,6 +52,9 @@ class StagHunt(AbstractGridGame):
             obs_type=obs_type,
             enable_multiagent=enable_multiagent,
         )
+
+        self.will_respawn_plants = will_respawn_plants
+        self.will_respawn_stag = will_respawn_stag
 
         # Config
         self._stag_follows = stag_follows
@@ -179,10 +185,13 @@ class StagHunt(AbstractGridGame):
 
         # Reset prey if it was caught
         if iteration_rewards == (self._stag_reward, self._stag_reward):
-            self.STAG = place_entity_in_unoccupied_cell(
-                grid_dims=self.GRID_DIMENSIONS,
-                used_coordinates=self.PLANTS + self.AGENTS + [self.STAG],
-            )
+            if self.will_respawn_stag:
+                self.STAG = place_entity_in_unoccupied_cell(
+                    grid_dims=self.GRID_DIMENSIONS,
+                    used_coordinates=self.PLANTS + self.AGENTS + [self.STAG],
+                )
+            else:
+                self.STAG = [255, 255]
         elif (
             self._run_away_after_maul and self._mauling_punishment in iteration_rewards
         ):
@@ -191,14 +200,26 @@ class StagHunt(AbstractGridGame):
                 used_coordinates=self.PLANTS + self.AGENTS + [self.STAG],
             )
         elif self._forage_reward in iteration_rewards:
-            new_plants = respawn_plants(
-                plants=self.PLANTS,
-                tagged_plants=self._tagged_plants,
-                grid_dims=self.GRID_DIMENSIONS,
-                used_coordinates=self.AGENTS + [self.STAG],
-            )
-            self._tagged_plants = []
-            self.PLANTS = new_plants
+            if self.will_respawn_plants:
+                new_plants = respawn_plants(
+                    plants=self.PLANTS,
+                    tagged_plants=self._tagged_plants,
+                    grid_dims=self.GRID_DIMENSIONS,
+                    used_coordinates=self.AGENTS + [self.STAG],
+                )
+                self._tagged_plants = []
+                self.PLANTS = new_plants
+            else:
+                new_plants = does_not_respawn_plants(
+                    plants=self.PLANTS,
+                    tagged_plants=self._tagged_plants,
+                    grid_dims=self.GRID_DIMENSIONS,
+                    used_coordinates=self.AGENTS + [self.STAG],
+                )
+                self._tagged_plants = []
+                self.PLANTS = new_plants
+
+
 
         obs = self.get_observation()
         info = {}

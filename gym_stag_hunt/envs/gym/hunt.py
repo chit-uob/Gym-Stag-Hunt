@@ -21,6 +21,8 @@ class HuntEnv(AbstractMarkovStagHuntEnv):
         stag_reward=5,
         forage_reward=1,
         mauling_punishment=-5,
+        respawn_plants=True,
+        respawn_stag=True,
     ):
         """
         :param grid_size: A (W, H) tuple corresponding to the grid dimensions. Although W=H is expected, W!=H works also
@@ -82,6 +84,8 @@ class HuntEnv(AbstractMarkovStagHuntEnv):
             forage_reward=forage_reward,
             mauling_punishment=mauling_punishment,
             opponent_policy=opponent_policy,
+            will_respawn_plants=respawn_plants,
+            will_respawn_stag=respawn_stag,
         )
 
         self.action_space = Discrete(5)  # up, down, left, right or stand

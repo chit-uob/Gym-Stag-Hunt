@@ -39,11 +39,6 @@ def set_plant_positions(env, plant_positions):
     env.env.game.PLANTS = [np.array(pos) for pos in plant_positions]
 
 
-def disable_plant_respawn():
-    """
-    Disable the respawn of the plants in the ZooHuntEnvironment.
-    """
-    pass
 
 
 def set_player_0_position(env, x, y):
@@ -78,6 +73,8 @@ def get_basic_env(grid_size=10, load_renderer=False):
         mauling_punishment=-5,
         load_renderer=load_renderer,
         grid_size=(grid_size, grid_size),
+        respawn_plants=False,
+        respawn_stag=False,
     )
     env.reset()
     return env
