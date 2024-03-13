@@ -30,6 +30,7 @@ class ZooHuntEnvironment(PettingZooEnv):
         mauling_punishment=-5,
         respawn_plants=True,
         respawn_stag=True,
+        move_closer_reward=False,
     ):
         hunt_env = HuntEnv(
             grid_size,
@@ -46,5 +47,6 @@ class ZooHuntEnvironment(PettingZooEnv):
             mauling_punishment,
             respawn_plants,
             respawn_stag,
+            move_closer_reward,
         )
         super().__init__(og_env=hunt_env)

@@ -8,6 +8,7 @@ from gym_stag_hunt.src.utils import (
     spawn_plants,
     respawn_plants,
     does_not_respawn_plants,
+    calculate_distance,
 )
 
 # Entity Keys
@@ -36,6 +37,7 @@ class StagHunt(AbstractGridGame):
         enable_multiagent,
         will_respawn_plants=True,
         will_respawn_stag=True,
+        move_closer_reward=False,
     ):
         """
         :param stag_reward: How much reinforcement the agents get for catching the stag
@@ -55,6 +57,7 @@ class StagHunt(AbstractGridGame):
 
         self.will_respawn_plants = will_respawn_plants
         self.will_respawn_stag = will_respawn_stag
+        self.move_closer_reward = move_closer_reward
 
         # Config
         self._stag_follows = stag_follows
@@ -153,6 +156,27 @@ class StagHunt(AbstractGridGame):
                 rewards = 0, self._forage_reward  # Only B foraged
             else:
                 rewards = 0, 0  # No one got anything
+
+        if self.move_closer_reward:
+            # a reward that is proportional to the distance between the agents and the stag
+            # like a force field that pulls the agents towards the stag
+            MAX_REWARD_STAG = 0.2
+            a_dist = calculate_distance(self.A_AGENT, self.STAG)
+            b_dist = calculate_distance(self.B_AGENT, self.STAG)
+            if a_dist == 0:
+                a_dist = 1
+            if b_dist == 0:
+                b_dist = 1
+            rewards = (rewards[0] + MAX_REWARD_STAG/a_dist, rewards[1] + MAX_REWARD_STAG/b_dist)
+            MAX_REWARD_PLANT = 0.1
+            a_dist_to_closest_plant = min([calculate_distance(self.A_AGENT, plant) for plant in self.PLANTS])
+            b_dist_to_closest_plant = min([calculate_distance(self.B_AGENT, plant) for plant in self.PLANTS])
+            if a_dist_to_closest_plant == 0:
+                a_dist_to_closest_plant = 1
+            if b_dist_to_closest_plant == 0:
+                b_dist_to_closest_plant = 1
+            rewards = (rewards[0] + MAX_REWARD_PLANT/a_dist_to_closest_plant, rewards[1] + MAX_REWARD_PLANT/b_dist_to_closest_plant)
+
 
         return float(rewards[0]), float(rewards[1])
 

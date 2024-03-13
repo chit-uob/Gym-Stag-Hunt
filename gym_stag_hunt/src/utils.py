@@ -126,3 +126,13 @@ def does_not_respawn_plants(plants, tagged_plants, grid_dims, used_coordinates):
         new_plant[0], new_plant[1] = 255, 255
         plants[tagged_plant] = new_plant
     return plants
+
+
+def calculate_distance(location_1, location_2):
+    """
+    Calculate the distance between two locations
+    """
+    # return math.sqrt(math.pow((location_1[0] - location_2[0]), 2) + math.pow((location_1[1] - location_2[1]), 2))
+    location_1 = location_1.astype('int32')
+    location_2 = location_2.astype('int32')
+    return abs((location_1[0]) - location_2[0]) + abs(location_1[1] - location_2[1])

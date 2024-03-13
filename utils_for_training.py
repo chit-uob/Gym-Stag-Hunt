@@ -38,7 +38,7 @@ def eval_agent(env, human_agent, rl_agent, total_time_step=20):
         agent_0_obs = new_agent_0_obs
         agent_1_obs = new_agent_1_obs
         total_reward += reward['player_1']
-        if total_reward > 0:
+        if total_reward > 2:
             return total_reward, time_step
     return total_reward, total_time_step
 

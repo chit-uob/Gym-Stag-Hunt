@@ -75,6 +75,7 @@ def get_basic_env(grid_size=10, load_renderer=False):
         grid_size=(grid_size, grid_size),
         respawn_plants=False,
         respawn_stag=False,
+        move_closer_reward=True,
     )
     env.reset()
     return env
