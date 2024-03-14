@@ -11,8 +11,8 @@ def calculate_distance(location_1, location_2):
     """
     Calculate the distance between two locations
     """
-    # return math.sqrt(math.pow((location_1[0] - location_2[0]), 2) + math.pow((location_1[1] - location_2[1]), 2))
-    return abs((location_1[0]) - location_2[0]) + abs(location_1[1] - location_2[1])
+    return math.sqrt(math.pow((location_1[0] - location_2[0]), 2) + math.pow((location_1[1] - location_2[1]), 2))
+    # return abs((location_1[0]) - location_2[0]) + abs(location_1[1] - location_2[1])
 
 
 def negative_distance_delta(old_location, new_location, target_position):

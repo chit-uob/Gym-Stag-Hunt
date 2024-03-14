@@ -1,12 +1,11 @@
-from utils_for_training import train_agent, plot_eval_results, play_agent
+from utils_for_training import train_agent, plot_eval_results, play_agent, play_agent_vs_human
 from epsilon_greedy_ql_agent import EpsilonGreedyQLAgent
 from zoo_hunt_env_editor import *
+from find_out_strategy import FindOutStrategyAgent
 
-rl_agent = EpsilonGreedyQLAgent('player_1', 5, epsilon=0.9, alpha=0.1, gamma=0.9)
-train_agent(both_far_from_plant_stag_in_mid, (1,0,0,0,0,0), rl_agent,
-            episodes=1000,
-            need_eval=True, rl_agent_filename='training_results/eg_q_table_1.pkl',
-            eval_result_filename='training_results/eg_eval_result_1.json')
+ALWAYS_STAG = (1,0,0,0,0,0)
+ALWAYS_PLANT = (0,1,0,0,0,0)
+TIT_FOR_TAT = (1,1,0,1,1,0)
 
-plot_eval_results('training_results/eg_eval_result_1.json', 'results')
-play_agent(both_far_from_plant_stag_in_mid, (1,0,0,0,0,0), 'training_results/eg_q_table_1.pkl', frame_interval=0.5)
+find_out_strategy_agent = FindOutStrategyAgent('both_far_from_plant_stag_in_mid')
+play_agent_vs_human(both_far_from_plant_stag_in_mid, TIT_FOR_TAT, find_out_strategy_agent, load_renderer=False)
