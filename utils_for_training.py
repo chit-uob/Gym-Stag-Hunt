@@ -5,6 +5,7 @@ from zoo_hunt_env_editor import get_player_0_position
 import json
 import dill
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def encode_obs(obs):
@@ -99,12 +100,21 @@ def plot_eval_results(eval_result_filename, plot_title):
     # print(rewards)
     # print(turn_until_reward)
     # how_good = [reward * 20-turn for reward, turn in zip(rewards, turn_until_reward)]
-    plt.plot(episodes, turn_until_reward)
+    window = 20
+
+    turn_until_reward_series = pd.Series(turn_until_reward)
+    turn_until_reward_smoothed = turn_until_reward_series.rolling(window=window, min_periods=1).mean()
+
+    plt.plot(episodes, turn_until_reward_smoothed)
     plt.title(plot_title)
     plt.xlabel("Episodes")
     plt.ylabel("Turn until reward")
     plt.show()
-    plt.plot(episodes, rewards)
+
+    rewards_series = pd.Series(rewards)
+    rewards_smoothed = rewards_series.rolling(window=window, min_periods=1).mean()
+
+    plt.plot(episodes, rewards_smoothed)
     plt.title(plot_title)
     plt.xlabel("Episodes")
     plt.ylabel("Total reward")
