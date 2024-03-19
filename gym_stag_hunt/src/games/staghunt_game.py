@@ -160,7 +160,7 @@ class StagHunt(AbstractGridGame):
         if self.move_closer_reward:
             # a reward that is proportional to the distance between the agents and the stag
             # like a force field that pulls the agents towards the stag
-            MAX_REWARD_STAG = 0.2
+            MAX_REWARD_STAG = 0.1
             a_dist = calculate_distance(self.A_AGENT, self.STAG)
             b_dist = calculate_distance(self.B_AGENT, self.STAG)
             if a_dist == 0:
@@ -168,7 +168,7 @@ class StagHunt(AbstractGridGame):
             if b_dist == 0:
                 b_dist = 1
             rewards = (rewards[0] + MAX_REWARD_STAG/a_dist, rewards[1] + MAX_REWARD_STAG/b_dist)
-            MAX_REWARD_PLANT = 0.1
+            MAX_REWARD_PLANT = 0.05
             a_dist_to_closest_plant = min([calculate_distance(self.A_AGENT, plant) for plant in self.PLANTS])
             b_dist_to_closest_plant = min([calculate_distance(self.B_AGENT, plant) for plant in self.PLANTS])
             if a_dist_to_closest_plant == 0:

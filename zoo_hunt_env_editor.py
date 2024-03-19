@@ -68,7 +68,7 @@ def get_basic_env(grid_size=10, load_renderer=False):
         stag_follows=False,
         run_away_after_maul=False,
         forage_quantity=2,
-        stag_reward=5,
+        stag_reward=3,
         forage_reward=2,
         mauling_punishment=-1,
         load_renderer=load_renderer,
