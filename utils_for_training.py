@@ -121,6 +121,52 @@ def plot_eval_results(eval_result_filename, plot_title):
     plt.show()
 
 
+def plot_eval_results_compare(eval_result_filename1, eval_result_filename2, plot_title):
+    # Load data from the first file
+    with open(eval_result_filename1, 'r') as f:
+        eval_results1 = json.load(f)
+    episodes1, rewards1, turn_until_reward1 = zip(*eval_results1)
+
+    # Load data from the second file
+    with open(eval_result_filename2, 'r') as f:
+        eval_results2 = json.load(f)
+    episodes2, rewards2, turn_until_reward2 = zip(*eval_results2)
+
+    window = 20
+
+    # Plot turn_until_reward
+    turn_until_reward_series1 = pd.Series(turn_until_reward1)
+    turn_until_reward_smoothed1 = turn_until_reward_series1.rolling(window=window, min_periods=1).mean()
+
+    turn_until_reward_series2 = pd.Series(turn_until_reward2)
+    turn_until_reward_smoothed2 = turn_until_reward_series2.rolling(window=window, min_periods=1).mean()
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(episodes1, turn_until_reward_smoothed1, 'r-', label=eval_result_filename1)
+    plt.plot(episodes2, turn_until_reward_smoothed2, 'b-', label=eval_result_filename2)
+    plt.title(f"{plot_title} - Turn until reward")
+    plt.xlabel("Episodes")
+    plt.ylabel("Turn until reward")
+    plt.legend()
+    plt.show()
+
+    # Plot rewards
+    rewards_series1 = pd.Series(rewards1)
+    rewards_smoothed1 = rewards_series1.rolling(window=window, min_periods=1).mean()
+
+    rewards_series2 = pd.Series(rewards2)
+    rewards_smoothed2 = rewards_series2.rolling(window=window, min_periods=1).mean()
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(episodes1, rewards_smoothed1, 'r-', label=eval_result_filename1)
+    plt.plot(episodes2, rewards_smoothed2, 'b-', label=eval_result_filename2)
+    plt.title(f"{plot_title} - Total reward")
+    plt.xlabel("Episodes")
+    plt.ylabel("Total reward")
+    plt.legend()
+    plt.show()
+
+
 def play_agent(env_generator, human_agent_settings, rl_agent_file_name,
                total_time_step=20, frame_interval=0.5, load_renderer=True):
     with open(rl_agent_file_name, 'rb') as f:
