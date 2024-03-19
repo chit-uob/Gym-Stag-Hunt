@@ -71,8 +71,6 @@ def train_agent(env_generator, human_agent_settings, rl_agent,
             rl_agent.store_transition(encode_obs(agent_1_obs), rl_agent_action, agent_1_reward)
             agent_0_obs = new_agent_0_obs
             agent_1_obs = new_agent_1_obs
-            if done['player_1']:
-                break
         rl_agent.update_end_of_episode()
         if progress_print and episode % progress_print == 0:
             print(episode, rl_agent.epsilon)
@@ -192,8 +190,6 @@ def play_agent(env_generator, human_agent_settings, rl_agent_file_name,
         agent_1_obs = new_agent_1_obs
         env.render(mode="human")
         time.sleep(frame_interval)
-        if done['player_1']:
-            break
 
 
 def play_agent_vs_human(env_generator, human_agent_settings, rl_agent,
