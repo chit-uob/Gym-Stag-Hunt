@@ -16,4 +16,4 @@ for env_type in TYPE_OF_ENVS:
                     eval_result_filename=file_prefix+"result.json")
         print("finished training")
         plot_eval_results(file_prefix+"result.json", file_prefix[17:])
-        # play_agent(env_type, setting_type, file_prefix+"table.pkl")
+        play_agent(env_type, setting_type, file_prefix+"table.pkl", load_renderer=False)
