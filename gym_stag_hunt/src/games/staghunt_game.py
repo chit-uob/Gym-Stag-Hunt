@@ -223,6 +223,10 @@ class StagHunt(AbstractGridGame):
                 self._tagged_plants = []
                 self.PLANTS = new_plants
 
+        #todo temp
+        is_done = False
+        if iteration_rewards[1] >= 2:
+            is_done = True
 
         iteration_rewards = self.add_additional_rewards(iteration_rewards)
 
@@ -236,13 +240,13 @@ class StagHunt(AbstractGridGame):
                 return (
                     (obs, self._flip_coord_observation_perspective(obs)),
                     iteration_rewards,
-                    False,
+                    is_done,
                     info,
                 )
             else:
-                return (obs, obs), iteration_rewards, False, info
+                return (obs, obs), iteration_rewards, is_done, info
         else:
-            return obs, iteration_rewards[0], False, info
+            return obs, iteration_rewards[0], is_done, info
 
     def _coord_observation(self):
         """
