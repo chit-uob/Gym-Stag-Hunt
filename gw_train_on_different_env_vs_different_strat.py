@@ -1,6 +1,6 @@
-from utils_for_training import train_agent, plot_eval_results, play_agent, plot_eval_results_compare
-from epsilon_greedy_ql_agent import EpsilonGreedyQLAgent
-from zoo_hunt_env_editor import both_far_from_plant_stag_in_mid, stag_on_the_side_plant_in_mid, choose_from_stag_or_plant
+from gw_utils_for_training import train_agent, plot_eval_results, play_agent, plot_eval_results_compare
+from gw_epsilon_greedy_ql_agent import EpsilonGreedyQLAgent
+from gw_zoo_hunt_env_editor import both_far_from_plant_stag_in_mid, stag_on_the_side_plant_in_mid, choose_from_stag_or_plant
 
 TYPE_OF_ENVS = [both_far_from_plant_stag_in_mid, stag_on_the_side_plant_in_mid, choose_from_stag_or_plant]
 TYPE_OF_SETTINGS = [(1, 0, 0, 0, 0, 0), (0, 1, 0, 0, 0, 0), (1, 1, 0, 1, 1, 0)]

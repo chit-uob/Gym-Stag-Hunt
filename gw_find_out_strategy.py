@@ -1,4 +1,4 @@
-from proposed_agent import unpack_observation, negative_distance_delta, calculate_distance, normalize_deltas
+from gw_proposed_agent import unpack_observation, negative_distance_delta, calculate_distance, normalize_deltas
 import math
 
 LEFT = 0

@@ -1,7 +1,7 @@
 import time
 from gym_stag_hunt.envs.pettingzoo.hunt import ZooHuntEnvironment
-from zoo_hunt_env_editor import *
-from proposed_agent import ProposedAgent
+from gw_zoo_hunt_env_editor import *
+from gw_proposed_agent import ProposedAgent
 
 LEFT = 0
 DOWN = 1

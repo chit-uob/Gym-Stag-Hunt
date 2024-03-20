@@ -1,7 +1,7 @@
 import time
-from epsilon_greedy_ql_agent import EpsilonGreedyQLAgent
-from proposed_agent import ProposedAgent
-from zoo_hunt_env_editor import get_player_0_position
+from gw_epsilon_greedy_ql_agent import EpsilonGreedyQLAgent
+from gw_proposed_agent import ProposedAgent
+from gw_zoo_hunt_env_editor import get_player_0_position
 import json
 import dill
 import matplotlib.pyplot as plt
