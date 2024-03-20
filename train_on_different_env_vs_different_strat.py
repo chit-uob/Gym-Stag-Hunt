@@ -13,8 +13,7 @@ for env_type in TYPE_OF_ENVS:
         print(file_prefix)
         train_agent(env_type, setting_type, rl_agent,
                     need_eval=True, rl_agent_filename=file_prefix+"table.pkl",
-                    eval_result_filename=file_prefix+"result.json",
-                    episodes=1000)
+                    eval_result_filename=file_prefix+"result.json")
         print("finished training")
         plot_eval_results(file_prefix+"result.json", file_prefix[17:])
-        # play_agent(env_type, setting_type, file_prefix+"table.pkl", load_renderer=False)
+        play_agent(env_type, setting_type, file_prefix+"table.pkl", load_renderer=False)

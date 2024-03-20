@@ -16,7 +16,7 @@ def decay_epsilon(epsilon_value, decay_rate):
     return epsilon_value * decay_rate
 
 
-def eval_agent(env, human_agent, rl_agent, total_time_step=20):
+def eval_agent(env, human_agent_settings, rl_agent, total_time_step=20):
     """
     Evaluate the agent's performance.
     :param env: The environment to evaluate the agent in.
@@ -29,6 +29,7 @@ def eval_agent(env, human_agent, rl_agent, total_time_step=20):
     observation, reward, done, info = env.step({'player_0': 4, 'player_1': 4})
     agent_0_obs = observation['player_0']
     agent_1_obs = observation['player_1']
+    human_agent = ProposedAgent(get_player_0_position(env), *human_agent_settings)
     for time_step in range(total_time_step):
         human_agent_action = human_agent.choose_action(agent_0_obs)
         rl_agent_action = rl_agent.play_normal(encode_obs(agent_1_obs))
@@ -36,10 +37,11 @@ def eval_agent(env, human_agent, rl_agent, total_time_step=20):
             {'player_0': human_agent_action, 'player_1': rl_agent_action})
         new_agent_0_obs = observation['player_0']
         new_agent_1_obs = observation['player_1']
+        human_agent.update_parameters(agent_0_obs, new_agent_0_obs)
         agent_0_obs = new_agent_0_obs
         agent_1_obs = new_agent_1_obs
         total_reward += reward['player_1']
-        if total_reward >= 2:
+        if done['player_1']:
             return total_reward, time_step
     return total_reward, total_time_step
 
@@ -80,8 +82,7 @@ def train_agent(env_generator, human_agent_settings, rl_agent,
             rl_agent.epsilon = decay_epsilon(rl_agent.epsilon, decay_rate)
         if need_eval and episode % eval_episodes == 0:
             env_for_eval = env_generator()
-            human_agent_for_eval = ProposedAgent(get_player_0_position(env_for_eval), *human_agent_settings)
-            eval_result = eval_agent(env_for_eval, human_agent_for_eval, rl_agent, total_time_step)
+            eval_result = eval_agent(env_for_eval, human_agent_settings, rl_agent, total_time_step)
             eval_results.append((episode, *eval_result))
 
     with open(rl_agent_filename, 'wb') as f:
